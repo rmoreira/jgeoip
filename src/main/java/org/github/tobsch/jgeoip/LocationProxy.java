@@ -24,23 +24,25 @@ import java.util.ArrayList;
 
 public class LocationProxy extends RubyObject {
   Location location;
-  
+
   private static final ArrayList<String> attributes = new ArrayList<String>();
-  
+
   // a map with all properties
   static {
     attributes.add("city");
     attributes.add("postal_code");
     attributes.add("country_code");
+    attributes.add("country_code2");
+    attributes.add("country_code3");
     attributes.add("country_name");
     attributes.add("region");
     attributes.add("latitude");
     attributes.add("longitude");
     attributes.add("dma_code");
     attributes.add("area_code");
-    attributes.add("metro_code");    
+    attributes.add("metro_code");
   }
-  
+
   public LocationProxy(final Ruby ruby, RubyClass rubyClass) {
     super(ruby, rubyClass);
   }
@@ -49,27 +51,27 @@ public class LocationProxy extends RubyObject {
     super(ruby, rubyClass);
     this.location = location;
   }
-  
+
   @JRubyMethod
   public RubyArray keys(ThreadContext context) {
     RubyArray res = RubyArray.newArray(context.runtime);
     for (String key : attributes) {
       res.add(RubySymbol.newSymbol(context.runtime, key));
     }
-    
+
     return res;
   }
-  
+
   @JRubyMethod(name = "to_hash")
   public IRubyObject toHash(ThreadContext context) {
     RubyHash hash = RubyHash.newHash(context.runtime);
     for (String key : attributes) {
       hash.put(RubySymbol.newSymbol(context.runtime, key), get(context, context.runtime.newString(key)));
     }
-    
+
     return hash;
   }
-  
+
   @JRubyMethod(name = "[]")
   public IRubyObject get(ThreadContext context, IRubyObject key) {
     if (attributes.contains(key.toString())) {
@@ -78,29 +80,39 @@ public class LocationProxy extends RubyObject {
       return context.runtime.getNil();
     }
   }
-  
+
   @JRubyMethod
   public IRubyObject distance(ThreadContext context, IRubyObject p2) {
     LocationProxy p2loc = (LocationProxy)p2;
     return context.runtime.newFloat(location.distance(p2loc.location));
   }
-  
+
   @JRubyMethod
   public IRubyObject inspect(ThreadContext context) {
     return toHash(context).inspect();
   }
-  
+
   @JRubyMethod(name = "city")
   public IRubyObject getCity(ThreadContext context) {
     return location.city == null ? context.runtime.getNil() : context.runtime.newString(location.city);
   }
-  
+
   @JRubyMethod(name = "postal_code")
   public IRubyObject getPostalCode(ThreadContext context) {
     return location.postalCode == null ? context.runtime.getNil() : context.runtime.newString(location.postalCode);
   }
 
   @JRubyMethod(name = "country_code")
+  public IRubyObject getCountryCode(ThreadContext context) {
+    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode);
+  }
+
+  @JRubyMethod(name = "country_code2")
+  public IRubyObject getCountryCode(ThreadContext context) {
+    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode);
+  }
+
+  @JRubyMethod(name = "country_code3")
   public IRubyObject getCountryCode(ThreadContext context) {
     return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode);
   }
@@ -114,7 +126,7 @@ public class LocationProxy extends RubyObject {
   public IRubyObject getRegion(ThreadContext context) {
     return location.region == null ? context.runtime.getNil() : context.runtime.newString(location.region);
   }
-  
+
   @JRubyMethod(name = "latitude")
   public IRubyObject getLatitude(ThreadContext context) {
     return context.runtime.newFloat(location.latitude);

@@ -24,17 +24,17 @@ class JGeoIPTest < Test::Unit::TestCase
     end
 
     should 'find the correct city by hostname' do
-      correct_keys = [ :city, :postal_code, :country_code, :country_name, :region, :latitude, :longitude, :dma_code, :area_code, :metro_code ]
+      correct_keys = [ :city, :postal_code, :country_code, :country_code2, :country_code3, :country_name, :region, :latitude, :longitude, :dma_code, :area_code, :metro_code ]
       result = @geo.city('github.com')
       assert_equal correct_keys, result.keys
-      assert_equal 'San Antonio', result[:city] 
+      assert_equal 'San Antonio', result[:city]
     end
-    
+
     should 'be a proper location object' do
       result = @geo.city('github.com')
       assert_kind_of Location, result
     end
-    
+
     should 'find the city by ip too' do
       result = @geo.city('207.97.227.239')
       assert_equal 'United States', result[:country_name]
@@ -48,7 +48,7 @@ class JGeoIPTest < Test::Unit::TestCase
       p3 = @geo.city('facebook.com')
       # from sa to hamburg
       assert_in_delta 8537.271518247373, p1.distance(p2), 100
-      
+
       # from sa to sf
       assert_in_delta 2363.280770976432, p1.distance(p3), 100
     end
@@ -79,7 +79,7 @@ class JGeoIPTest < Test::Unit::TestCase
       result = @geo.city('127.0.0.1')
       assert_equal nil, result
     end
-    
+
     should 'convert values to utf8' do
       result = @geo.city('hs-osnabrueck.de').city
       assert_equal 'Osnabrück', result
