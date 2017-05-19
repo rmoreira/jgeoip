@@ -108,13 +108,13 @@ public class LocationProxy extends RubyObject {
   }
 
   @JRubyMethod(name = "country_code2")
-  public IRubyObject getCountryCode(ThreadContext context) {
-    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode);
+  public IRubyObject getCountryCode2(ThreadContext context) {
+    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode2);
   }
 
   @JRubyMethod(name = "country_code3")
-  public IRubyObject getCountryCode(ThreadContext context) {
-    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode);
+  public IRubyObject getCountryCode3(ThreadContext context) {
+    return location.countryCode == null ? context.runtime.getNil() : context.runtime.newString(location.countryCode3);
   }
 
   @JRubyMethod(name = "country_name")
